@@ -1,4 +1,5 @@
 npm create-react-app my-app
+
 create github repository
     git remote add origin <path-to-git>
     # push your code
@@ -8,5 +9,11 @@ create github repository
         git add .
         git commit -m "Your commit message"
         git push origin main
+
+Setup tailwind
+    # follow the steps for tailwind installation
+    npm install -D tailwindcss
+    npx tailwindcss init
+
 
 
