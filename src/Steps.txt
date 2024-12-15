@@ -15,5 +15,7 @@ Setup tailwind
     npm install -D tailwindcss
     npx tailwindcss init
 
+Setup Routing
+    > npm i -D react-router-dom
 
 
