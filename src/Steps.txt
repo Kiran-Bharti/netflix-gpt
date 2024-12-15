@@ -1,0 +1,12 @@
+npm create-react-app my-app
+create github repository
+    git remote add origin <path-to-git>
+    # push your code
+        git branch -M main
+        git push -u origin main
+    # Make Changes and Push Updates
+        git add .
+        git commit -m "Your commit message"
+        git push origin main
+
+
