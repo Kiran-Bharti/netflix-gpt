@@ -1,20 +1,85 @@
 import React, { useState, useRef } from 'react';
 import Header from './Header';
 import { validate } from '../utils/validate';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { updateProfile } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Login = () => {
   const [isSignInForm, setSignInForm] = useState(true);
   const [errMessage, setErrMessage] = useState(null);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const toggleSignInForm = () => {
     setSignInForm(!isSignInForm);
   }
 
+  const userfullname = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
 
   const handleOnSubmit = () => {
-    setErrMessage(validate(email.current.value, password.current.value));
+    const message = validate(email.current.value, password.current.value);
+    setErrMessage(message);
+
+    if(message) return; // exit if there is some error message
+
+    if(!isSignInForm){ // Sign Up Logic
+      console.log("sign up");
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+
+        console.log("auth.currentUser");
+        console.log(auth.currentUser);
+        console.log("user");
+        console.log(user);
+        //Update user profile
+        updateProfile(user, {
+          displayName: userfullname.current.value, photoURL: "https://i.pinimg.com/originals/f0/72/3c/f0723cc24fe6dd182821264bdfb54a9a.jpg"
+        }).then(() => {
+          // Profile updated!
+          // dispatch action here to fix issue with updating name and photo
+          const { uid, email, displayName, photoURL } = auth.currentUser;
+          dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}));
+          // ...
+        }).catch((error) => {
+          // An error occurred
+          setErrMessage(error.message);
+          // ...
+        });
+
+        navigate("/browse");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrMessage(errorCode+"-"+errorMessage);
+      });
+    }
+    else{ // Sign In Logic
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        navigate("/browse");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrMessage(error.message);
+      });
+    }
+
   }
 
   return (          
@@ -27,7 +92,7 @@ const Login = () => {
             <form className='bg-black mt-6 sm:mt-28 sm:mx-auto right-0 left-0 sm:w-[350px] text-white rounded-md sm:bg-opacity-80 py-8 pl-10 pr-8 sm:px-12 min-h-screen sm:min-h-min' onSubmit={(e) => e.preventDefault()}>
                 <h1 className='font-bold text-2xl my-4'>{isSignInForm ? 'Sign In' : 'Sign Up'}</h1>
                 {
-                    !isSignInForm && (<input className='bg-zinc-900 my-2 p-3 w-full border border-gray-500 rounded-sm text-sm bg-opacity-85' type="text" placeholder='Full Name'/>)
+                    !isSignInForm && (<input ref={userfullname} className='bg-zinc-900 my-2 p-3 w-full border border-gray-500 rounded-sm text-sm bg-opacity-85' type="text" placeholder='Full Name'/>)
                 }
                 <input ref={email} className='bg-zinc-900 my-2 p-3 w-full border border-gray-500 rounded-sm text-sm bg-opacity-85' type="text" placeholder='Email address'/>
                 <input ref={password} className='bg-zinc-900 my-2 p-3 w-full border border-gray-500 rounded-sm text-sm bg-opacity-85' type="password" placeholder='Password'/>

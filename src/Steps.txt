@@ -32,3 +32,31 @@ Setup Firebase and go live
         What do you want to use as your public directory? build
         > npm run build
         > firebase deploy
+
+Create a password-based account using Firebase
+ - In firebase.js export const auth = getAuth(); as it will be common
+ - createUserWithEmailAndPassword
+
+Sign in a user with an email address and password
+ - signInWithEmailAndPassword
+
+To make the user id available throughout, setup redux store
+ > npm i -D @reduxjs/toolkit
+ > npm i react-redux
+ - create store: appStore.js
+ - create user slice: userSlice.js
+ - provide appStore to app in App.js
+
+Get the currently signed-in user (firebase)
+ - The recommended way to get the current user is by setting an observer on the Auth object: onAuthStateChanged
+ - this is to be done only once so set it using useEffect in Body.js
+ - dispatch the addUser action using useDispatch
+
+useNavigate to navigate to browse page when user is signed in -> Login.js
+
+Add user icon and sign out button in header
+ - use firebase signOut to handle sign out and navigate to login page
+ - if user is logged in then only show sign out option, for this subscribe to store using useSelector hook in Header.js
+
+Updating user profile using firebase updateProfile
+ - Adding this in Login.js inside createUserWithEmailAndPassword when user is signed in
