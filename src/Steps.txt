@@ -6,6 +6,7 @@ create github repository
         git branch -M main
         git push -u origin main
     # Make Changes and Push Updates
+        npm run build
         git add .
         git commit -m "Your commit message"
         git push origin main
@@ -60,3 +61,35 @@ Add user icon and sign out button in header
 
 Updating user profile using firebase updateProfile
  - Adding this in Login.js inside createUserWithEmailAndPassword when user is signed in
+
+--------
+When user is not signed in and tries to access browse page redirect user to login
+ - use useNaigate to navigate user, but since navigate must be used inside router provider only, move the onAuthStateChanged to header instead of body
+ - unsubscribe to onAuthStateChanged when header component unmounts -> this is done by returning a function from useEffect
+
+Login to TMDB and register a project in API section
+ - goto Now Playing -> get https://api.themoviedb.org/3/movie/now_playing
+ - export options from constants.js
+ - call the fetch function isnide useEffect
+
+React.StrictMode defined in index.js calls the API and components twice during development to track any bugs.
+
+create movieSlice to update movies in store
+add movieSlice reducer to appStore
+dispatch action to addNowPlayingMovies in Browse.js
+
+Move the above code of fetching the movie data and updating the store to custom hook useNowPlayingMovies
+use the useNowPlayingMovies hook inside Browse.js
+
+Create component MainContainer
+- use useSelector to subscribe to movie store
+- pass title and overview to VideoTitle component (display title, description, play and info button)
+- pass id to VideoBackground component
+
+fetch TMDB API in VideoBackground component Movies -> Videos to get the trailer
+- add VIDEOS_OPTIONS to constants
+- filter out the trailer
+- either use useState to display the trailer or use redux to store the video (used redux movieSlice)
+- use useSelector to subscribe to trailerVideo from store
+- add trailer.key to youtube embed code
+- move this code to useMovieTrailer

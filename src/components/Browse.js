@@ -1,10 +1,15 @@
 import React from 'react'
-import Header from './Header'
+import Header from './Header';
+import MainContainer from './MainContainer';
+import useNowPlayingMovies from '../customHooks/useNowPlayingMovies';
 
 const Browse = () => {
+  useNowPlayingMovies();
+
   return (
-    <div>
+    <div className='h-screen bg-black'>
       <Header />
+      <MainContainer />
     </div>
   )
 }
