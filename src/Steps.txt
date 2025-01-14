@@ -93,3 +93,14 @@ fetch TMDB API in VideoBackground component Movies -> Videos to get the trailer
 - use useSelector to subscribe to trailerVideo from store
 - add trailer.key to youtube embed code
 - move this code to useMovieTrailer
+
+----------------
+
+Make component SecondaryContainer for listing movies
+- SecondaryContainer contains MovieList and passes title and nowPlayingMovies from store
+- MovieList contains MovieCard component
+  - Pass movie.poster_path from MovieList to MovieCard
+  - in MovieCard add the image with poster_path and image CDN url from TMDB
+  - map through movies in MovieList to display all MovieCard
+- add different MovieList for Now Playing, Popular, Top rated ... movies
+  - for each MovieList Type create a separate hook and add to store

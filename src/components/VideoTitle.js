@@ -2,7 +2,7 @@ import React from 'react'
 
 const VideoTitle = ({title, overview}) => {
   return (
-    <div className='text-white pt-60 px-4 sm:px-16 sm:pt-64 absolute bg-gradient-to-r from-black w-full aspect-video sm:max-h-dvh'>
+    <div className='text-white pt-60 px-4 sm:px-16 sm:pt-64 absolute sm:bg-gradient-to-r sm:from-black w-full aspect-video sm:max-h-dvh'>
       <h1 className='text-xl font-bold my-2'>{title}</h1>
       <p className='text-xs sm:text-sm sm:w-1/3 sm:font-semibold'>{overview}</p>
       <div className='my-4'>
